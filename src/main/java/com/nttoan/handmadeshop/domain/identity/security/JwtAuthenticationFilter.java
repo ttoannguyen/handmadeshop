@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
@@ -45,14 +46,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
-        String token = this.servletTokenExtractor.extractToken(request);
-        if (token != null
-                && jwtService.isTokenValid(token)
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails user = userDetailsService.loadUserByUsername(jwtService.extractUsername(token));
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user,
-                    null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        try {
+            String token = servletTokenExtractor.extractToken(request);
+            System.out.println("JWT FILTER RUNNING");
+            System.out.println(">>> TOKEN: " + token);
+            if (StringUtils.hasText(token)
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                if (jwtService.isTokenValid(token)) {
+
+                    String username = jwtService.extractUsername(token);
+
+                    UserDetails user = userDetailsService.loadUserByUsername(username);
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            user.getAuthorities());
+
+                    // attach request details (best practice)
+                    authentication.setDetails(
+                            new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                                    .buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+
+        } catch (Exception ex) {
+           
         }
         filterChain.doFilter(request, response);
     }

@@ -32,8 +32,7 @@ public class SecurityConfig {
                                                 request -> request
                                                                 .requestMatchers("/api/v1/auth/**")
                                                                 .permitAll()
-                                // .anyRequest()
-                                )
+                                                                .anyRequest().authenticated())
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .exceptionHandling(exceptions -> exceptions
                                                 .authenticationEntryPoint(appAuthenticationEntryPoint));

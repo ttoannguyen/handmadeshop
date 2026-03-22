@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,13 @@ import io.jsonwebtoken.security.SignatureException;
 
 @Service
 public class JwtService {
+    @Value("${jwt.secret}")
     private String jwtSecret;
+
+    @Value("${jwt.expiration}")
     private long accessTokenExpirationMs;
+
+    @Value("${jwt.refresh-expiration}")
     private long refreshTokenExpirationMs;
 
     public String extractUsername(String token) {
