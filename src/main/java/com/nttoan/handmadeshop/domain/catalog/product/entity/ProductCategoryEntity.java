@@ -1,13 +1,14 @@
 package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.catalog.category.entity.CategoryEntity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,27 +16,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "product_images", indexes = @Index(name = "idx_product_id", columnList = "product_id"))
+@Table(name = "product_categories")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductImageEntity extends BaseEntity {
-    @Column(nullable = false)
-    private String imageUrl;
+public class ProductCategoryEntity {
+
+    @EmbeddedId
+    @Builder.Default
+    private ProductCategoryId id = new ProductCategoryId();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productId")
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @Column(nullable = false)
-    @Builder.Default
-    private Boolean isPrimary = false;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("categoryId")
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 
     @Column(nullable = false)
     @Builder.Default
     private Integer displayOrder = 0;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean isFeatured = false;
 }

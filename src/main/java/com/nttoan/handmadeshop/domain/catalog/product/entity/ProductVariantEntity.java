@@ -39,6 +39,10 @@ public class ProductVariantEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer stock;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "color_id")
+    private ColorEntity color;
+
     @Column(precision = 15, scale = 2)
     private BigDecimal priceAdjustment;
 

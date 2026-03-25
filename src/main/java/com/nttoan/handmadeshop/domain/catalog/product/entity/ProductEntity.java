@@ -1,17 +1,14 @@
 package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.nttoan.handmadeshop.domain.catalog.category.entity.CategoryEntity;
 import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -42,11 +39,14 @@ public class ProductEntity extends BaseEntity {
     private boolean isActive = true;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CategoryEntity> category;
+    @Builder.Default
+    private List<ProductCategoryEntity> productCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductVariantEntity> variants;
+    @Builder.Default
+    private List<ProductVariantEntity> variants = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImageEntity> productImages;
+    @Builder.Default
+    private List<ProductImageEntity> productImages = new ArrayList<>();
 }
