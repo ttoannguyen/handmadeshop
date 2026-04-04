@@ -11,5 +11,4 @@ public interface UserMapper {
     UserEntity toUserEntity(RegisterRequest registerRequest);
 
     RegisterResponse toRegisterResponse(UserEntity entity);
-
 }

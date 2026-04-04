@@ -10,11 +10,14 @@ import lombok.Data;
 
 @Data
 public class ProductVariantRequest {
+
+    private UUID id;
+
     @NotBlank
     private String sku;
     private UUID colorId;
     private String size;
-    
+
     @Nonnull
     @Min(0)
     private Integer stock;

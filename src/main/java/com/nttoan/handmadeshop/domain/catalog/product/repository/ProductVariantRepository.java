@@ -8,4 +8,6 @@ import com.nttoan.handmadeshop.domain.catalog.product.entity.ProductVariantEntit
 
 public interface ProductVariantRepository extends JpaRepository<ProductVariantEntity, UUID> {
     boolean existsBySku(String sku);
+
+    boolean existsBySkuAndIdNot(String sku, UUID id);
 }
