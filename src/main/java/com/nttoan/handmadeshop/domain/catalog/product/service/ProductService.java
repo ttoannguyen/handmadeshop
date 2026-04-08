@@ -11,6 +11,10 @@ public interface ProductService {
 
     ProductResponse updateProduct(UUID productId, ProductRequest request);
 
+    void deactivateProduct(UUID productId);
+
+    void activateProduct(UUID productId);
+
     ProductResponse getProduct(UUID productId);
 
     List<ProductResponse> getProducts();

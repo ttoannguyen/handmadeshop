@@ -61,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse updateProduct(UUID productId, ProductRequest request) {
         validateRequest(request);
 
@@ -78,6 +79,23 @@ public class ProductServiceImpl implements ProductService {
         syncImages(product, request.getImages());
 
         return ProductResponse.builder().build();
+    }
+
+    @Override
+    @Transactional
+    public void deactivateProduct(UUID productId) {
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        if (!Boolean.TRUE.equals(product.isActive()))
+            throw new RuntimeException("Product already inactive");
+        product.setActive(false);
+    }
+
+    @Override
+    public void activateProduct(UUID productId) {
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setActive(false);
     }
 
     @Override
