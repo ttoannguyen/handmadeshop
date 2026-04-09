@@ -92,10 +92,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void activateProduct(UUID productId) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        product.setActive(false);
+
+        if (Boolean.TRUE.equals(product.isActive()))
+            throw new RuntimeException("Product already active");
+
+        product.setActive(true);
     }
 
     @Override
