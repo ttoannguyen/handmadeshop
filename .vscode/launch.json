@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "type": "java",
+        "name": "Run Spring Boot",
+        "request": "launch",
+        "mainClass": "com.nttoan.handmadeshop.HandmadeshopApplication",
+        "envFile": "${workspaceFolder}/.env"
+    },
+    {
+        "type": "java",
+        "name": "Spring Boot-HandmadeshopApplication<handmadeshop>",
+        "request": "launch",
+        "cwd": "${workspaceFolder}",
+        "mainClass": "com.nttoan.handmadeshop.HandmadeshopApplication",
+        "projectName": "handmadeshop",
+        "args": "",
+        "envFile": "${workspaceFolder}/.env"
+    }
+]
+}
