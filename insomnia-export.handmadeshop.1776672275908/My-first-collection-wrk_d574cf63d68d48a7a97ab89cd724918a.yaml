@@ -1,0 +1,212 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: My first collection
+meta:
+  id: wrk_d574cf63d68d48a7a97ab89cd724918a
+  created: 1776669938632
+  modified: 1776669938632
+  description: ""
+collection:
+  - name: Products
+    meta:
+      id: fld_cf046a91452b47758883443872fda046
+      created: 1776669951527
+      modified: 1776669980614
+      sortKey: -1776669951527
+      description: ""
+    children:
+      - url: http://{{ _.base_url }}/products
+        name: Get Products
+        meta:
+          id: req_05efc514d7584055aef1e2c17d00e780
+          created: 1776669938649
+          modified: 1776671338939
+          isPrivate: false
+          description: ""
+          sortKey: -1776669953684
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: ""
+        name: Get Product by ID
+        meta:
+          id: req_39d4f2c911464d6692782d7d9370768f
+          created: 1776669963764
+          modified: 1776669968073
+          isPrivate: false
+          description: ""
+          sortKey: -1776669953634
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: ""
+        name: Create Product
+        meta:
+          id: req_d0a2460e0e5045d5ba03a7c68cde5e8f
+          created: 1776671418055
+          modified: 1776671437565
+          isPrivate: false
+          description: ""
+          sortKey: -1776671418055
+        method: GET
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Users
+    meta:
+      id: fld_a4c88952e9154c2f8b85fe9873dc9148
+      created: 1776669977778
+      modified: 1776669977778
+      sortKey: -1776669977778
+      description: ""
+    children:
+      - url: ""
+        name: Get User by ID
+        meta:
+          id: req_901616f224f04e3a9f8f9b853d1c5437
+          created: 1776669987036
+          modified: 1776670007109
+          isPrivate: false
+          description: ""
+          sortKey: -1776669988927
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://{{ _.base_url }}/users
+        name: Get Users
+        meta:
+          id: req_b225d10b58534048be7cbfb3f075c20d
+          created: 1776670013972
+          modified: 1776670271749
+          isPrivate: false
+          description: ""
+          sortKey: -1776669971305.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2Fubmd1eWVuIiwiaWF0IjoxNzc2NjcwMjE1LCJleHAiOjE3NzY3NTY2MTV9.hCrtkA0_32ysjKXHu-BcmuEyyjrxl6O8HFCwJqkvXrVhHrvyknCo5ObMMIHFTBTly58yfAVMnKLftjsugJCgiA
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Auth
+    meta:
+      id: fld_d433d8ca4ae74f0fa12bcf30b68955a8
+      created: 1776670021081
+      modified: 1776670033928
+      sortKey: -1776669964652.5
+      description: ""
+    children:
+      - url: http://{{ _.base_url }}/auth/login
+        name: Login
+        meta:
+          id: req_0ecc8232bf3241a88a3bbe55fe1e7be6
+          created: 1776670043280
+          modified: 1776670213642
+          isPrivate: false
+          description: ""
+          sortKey: -1776670050949
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "toannguyen",
+            	"password": "123456"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_14faedc9270a83a4ecbe70000308405e51b5c29c
+    created: 1776669938639
+    modified: 1776670215377
+  cookies:
+    - id: 03eae910-08dc-4263-89aa-5e915fca1394
+      key: refreshToken
+      value: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2Fubmd1eWVuIiwiaWF0IjoxNzc2NjcwMjE1LCJleHAiOjE3NzcyNzUwMTV9.IeGdkha3_KbI1OT7cJFT8bb1g5yofZBdXJM5LLIU7kI-ordCMVPCF8DBjUKDPox4n5ZFEmnyT0qlvA4-xoVbSw
+      domain: localhost
+      path: /
+      secure: false
+      httpOnly: true
+      hostOnly: true
+environments:
+  name: ENV
+  meta:
+    id: env_14faedc9270a83a4ecbe70000308405e51b5c29c
+    created: 1776669938636
+    modified: 1776670121377
+    isPrivate: false
+  data:
+    base_url: localhost:8080/api/v1
