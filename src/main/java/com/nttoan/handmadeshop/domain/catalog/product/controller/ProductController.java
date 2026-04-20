@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttoan.handmadeshop.domain.catalog.product.dto.request.ProductRequest;
@@ -17,22 +16,25 @@ import com.nttoan.handmadeshop.domain.catalog.product.dto.response.ProductRespon
 import com.nttoan.handmadeshop.domain.catalog.product.service.ProductService;
 import com.nttoan.handmadeshop.domain.common.dto.BaseResponse;
 
-import jakarta.websocket.server.PathParam;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping(value = "/api/v1/products", produces = "application/json")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
     public BaseResponse<ProductResponse> createProduct(@RequestBody ProductRequest request) {
         return BaseResponse.of(productService.createProduct(request));
     }
 
     @GetMapping
+    @SecurityRequirement(name = "bearerAuth")
+
     public BaseResponse<List<ProductResponse>> getProducts() {
         return BaseResponse.of(productService.getProducts());
     }
@@ -43,12 +45,15 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}/deactivate")
+    @SecurityRequirement(name = "bearerAuth")
+
     public BaseResponse<Void> deactivateProduct(@PathVariable UUID productId) {
         productService.deactivateProduct(productId);
         return BaseResponse.ok();
     }
 
     @PatchMapping("/{productId}/activate")
+    @SecurityRequirement(name = "bearerAuth")
     public BaseResponse<Void> activateProduct(@PathVariable UUID productId) {
         productService.activateProduct(productId);
         return BaseResponse.ok();
