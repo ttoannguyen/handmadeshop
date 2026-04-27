@@ -2,7 +2,7 @@ package com.nttoan.handmadeshop.domain.identity.user.entity;
 
 import java.time.LocalDate;
 
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity_old;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "users")
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseEntity_old {
     @Column(nullable = false, unique = true)
     private String username;
 

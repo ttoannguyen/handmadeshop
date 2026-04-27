@@ -35,5 +35,4 @@ public class CategoryController {
     public List<CategoryResponse> getTree() {
         return categoryService.getTree();
     }
-
 }

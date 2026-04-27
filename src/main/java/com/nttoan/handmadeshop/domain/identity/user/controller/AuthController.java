@@ -26,10 +26,10 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public BaseResponse<RegisterResponse> register(@RequestBody RegisterRequest request) {
-        return BaseResponse.of(authenticationService.register(request));
-    }
+    // @PostMapping("/register")
+    // public BaseResponse<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    //     return BaseResponse.of(authenticationService.register(request));
+    // }
 
     @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@RequestBody LoginRequest request,

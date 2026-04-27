@@ -2,7 +2,7 @@ package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
 import java.math.BigDecimal;
 
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity_old;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductVariantEntity extends BaseEntity {
+public class ProductVariantEntity extends BaseEntity_old {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)

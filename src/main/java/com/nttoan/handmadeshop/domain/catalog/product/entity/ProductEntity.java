@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity_old;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity extends BaseEntity {
+public class ProductEntity extends BaseEntity_old {
 
     @Column(nullable = false)
     private String name;

@@ -16,7 +16,7 @@ import com.nttoan.handmadeshop.domain.identity.user.dto.response.RegisterRespons
 import com.nttoan.handmadeshop.domain.identity.user.entity.Role;
 import com.nttoan.handmadeshop.domain.identity.user.entity.UserEntity;
 import com.nttoan.handmadeshop.domain.identity.user.mapper.UserMapper;
-import com.nttoan.handmadeshop.domain.identity.user.repository.UserRepository;
+import com.nttoan.handmadeshop.domain.identity.user.repository.UserRepository_old;
 import com.nttoan.handmadeshop.domain.identity.user.service.AuthenticationService;
 
 import jakarta.servlet.http.Cookie;
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserRepository userRepository;
+    private final UserRepository_old userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;

@@ -1,6 +1,6 @@
 package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity_old;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductImageEntity extends BaseEntity {
+public class ProductImageEntity extends BaseEntity_old {
     @Column(nullable = false)
     private String imageUrl;
 

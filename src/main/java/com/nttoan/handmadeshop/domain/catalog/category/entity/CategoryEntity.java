@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nttoan.handmadeshop.domain.catalog.product.entity.ProductCategoryEntity;
-import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity_old;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryEntity extends BaseEntity {
+public class CategoryEntity extends BaseEntity_old {
 
     @Column(nullable = false, unique = true)
     private String name;

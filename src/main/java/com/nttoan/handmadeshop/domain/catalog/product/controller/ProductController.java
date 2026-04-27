@@ -34,7 +34,6 @@ public class ProductController {
 
     @GetMapping
     @SecurityRequirement(name = "bearerAuth")
-
     public BaseResponse<List<ProductResponse>> getProducts() {
         return BaseResponse.of(productService.getProducts());
     }
@@ -46,7 +45,6 @@ public class ProductController {
 
     @PatchMapping("/{productId}/deactivate")
     @SecurityRequirement(name = "bearerAuth")
-
     public BaseResponse<Void> deactivateProduct(@PathVariable UUID productId) {
         productService.deactivateProduct(productId);
         return BaseResponse.ok();

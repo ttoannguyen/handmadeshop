@@ -21,5 +21,4 @@ public class ColorController {
     public ColorResponse createColor(@RequestBody ColorRequest request) {
         return colorService.create(request);
     }
-
 }
