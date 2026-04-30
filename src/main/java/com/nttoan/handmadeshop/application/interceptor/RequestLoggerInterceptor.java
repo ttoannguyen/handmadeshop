@@ -1,15 +1,57 @@
 package com.nttoan.handmadeshop.application.interceptor;
 
+import java.util.UUID;
+
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class RequestLoggerInterceptor implements HandlerInterceptor {
+
+    private static final Logger log = LoggerFactory.getLogger(RequestLoggerInterceptor.class);
+    private static final String REQUEST_ID = "REQUEST_ID";
+    private static final String START_TIME = "START_TIME";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        System.out.println("Request: " + request.getMethod() + " " + request.getRequestURI());
+
+        String requestId = UUID.randomUUID().toString();
+        long startTime = System.currentTimeMillis();
+
+        request.setAttribute(REQUEST_ID, requestId);
+        request.setAttribute(START_TIME, startTime);
+
+        log.info("[{}] -> {} {}", requestId, request.getMethod(), request.getRequestURI());
         return true;
+    }
+
+    @Override
+    public void afterCompletion(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler,
+            @Nullable Exception ex) throws Exception {
+        String requestId = (String) request.getAttribute(REQUEST_ID);
+        long startTime = (long) request.getAttribute(START_TIME);
+        long duration = System.currentTimeMillis() - startTime;
+
+        log.info("[{}] ← {} {} ({} ms) status={}",
+                requestId,
+                request.getMethod(),
+                request.getRequestURI(),
+                duration,
+                response.getStatus());
+
+        if (ex != null) {
+            log.error("[{}] ERROR: {}", requestId, ex.getMessage(), ex);
+        }
     }
 }
