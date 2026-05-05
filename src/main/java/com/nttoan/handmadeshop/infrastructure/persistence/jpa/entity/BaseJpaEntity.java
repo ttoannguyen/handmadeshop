@@ -10,6 +10,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +36,7 @@ public abstract class BaseJpaEntity {
     }
 
 
-    @PrePersist
+    @PreUpdate
     protected void onUpdate(){
         this.updatedAt = Instant.now();
     }

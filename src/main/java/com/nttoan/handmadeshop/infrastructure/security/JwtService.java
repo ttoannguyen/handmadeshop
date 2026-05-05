@@ -15,48 +15,78 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     private final JwtProperties props;
+    private final SecretKey signingKey;
 
     public JwtService(JwtProperties props) {
         this.props = props;
+        this.signingKey = buildSigningKey();
     }
 
-    public String generateToken(String userId, String email, String role) {
+    /**
+     * Generate JWT token
+     */
+    public String generateToken(String username, String userId, String email, String role) {
+        long now = System.currentTimeMillis();
 
         return Jwts.builder()
-                .subject(userId)
+                .subject(username) 
+                .claim("userId", userId)
                 .claim("email", email)
                 .claim("role", role)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + props.getExpiration()))
-                .signWith(getSigningKey())
+                .issuedAt(new Date(now))
+                .expiration(new Date(now + props.getExpiration()))
+                .signWith(signingKey)
                 .compact();
     }
 
-    public String extractUserId(String token) {
+    /**
+     * Extract username (subject)
+     */
+    public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
+    /**
+     * Extract userId from claims
+     */
+    public String extractUserId(String token) {
+        return extractAllClaims(token).get("userId", String.class);
+    }
+
+    /**
+     * Validate token (signature + expiration)
+     */
     public boolean isValid(String token) {
         try {
-            Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parse(token);
-            return true;
+            Claims claims = parseClaims(token);
+            return !claims.getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }
     }
 
+    /**
+     * Extract all claims
+     */
     public Claims extractAllClaims(String token) {
+        return parseClaims(token);
+    }
+
+    /**
+     * Centralized parsing logic
+     */
+    private Claims parseClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSigningKey())
+                .verifyWith(signingKey)
                 .build()
-                .parseSignedClaims(token)   
+                .parseSignedClaims(token)
                 .getPayload();
     }
 
-    private SecretKey getSigningKey() {
+    /**
+     * Build signing key (cached)
+     */
+    private SecretKey buildSigningKey() {
         byte[] keyBytes = Base64.getDecoder().decode(props.getSecret());
         return Keys.hmacShaKeyFor(keyBytes);
     }

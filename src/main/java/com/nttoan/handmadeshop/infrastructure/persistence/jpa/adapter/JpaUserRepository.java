@@ -1,4 +1,4 @@
-package com.nttoan.handmadeshop.infrastructure.persistence.jpa.repositoty;
+package com.nttoan.handmadeshop.infrastructure.persistence.jpa.adapter;
 
 import java.util.Optional;
 
@@ -8,13 +8,14 @@ import com.nttoan.handmadeshop.domain.identity.user.entity.User;
 import com.nttoan.handmadeshop.domain.identity.user.repository.UserRepository;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity.UserJpaEntity;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.mapper.UserMapper;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.repositoty.UserJpaRepository;
 
 @Repository
-public class UserJpaRepositoryImpl implements UserRepository {
+public class JpaUserRepository implements UserRepository {
 
     private final UserJpaRepository jpaRepository;
 
-    public UserJpaRepositoryImpl(
+    public JpaUserRepository(
             UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
@@ -35,5 +36,12 @@ public class UserJpaRepositoryImpl implements UserRepository {
     public Optional<User> findByEmail(String email) {
     return jpaRepository.findByEmail(email).map(UserMapper::toDomain);
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return jpaRepository.findByUsername(username).map(UserMapper::toDomain);
+    }
+
+    
 
 }

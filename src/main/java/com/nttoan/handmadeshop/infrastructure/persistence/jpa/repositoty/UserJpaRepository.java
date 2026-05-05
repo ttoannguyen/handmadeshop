@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity.UserJpaEntity;
 
+
 public interface UserJpaRepository extends JpaRepository<UserJpaEntity, String>{
     Optional<UserJpaEntity> findByEmail(String email);
+
+    Optional<UserJpaEntity> findByUsername(String username);
 }

@@ -4,6 +4,7 @@ import com.nttoan.handmadeshop.application.identity.command.LoginCommand;
 import com.nttoan.handmadeshop.application.identity.command.RegisterUserCommand;
 import com.nttoan.handmadeshop.application.identity.dto.request.LoginRequest;
 import com.nttoan.handmadeshop.application.identity.dto.request.RegisterRequest;
+import com.nttoan.handmadeshop.application.identity.dto.response.LoginResponse;
 import com.nttoan.handmadeshop.application.identity.dto.response.UserResponse;
 import com.nttoan.handmadeshop.domain.identity.user.entity.User;
 
@@ -33,5 +34,9 @@ public class UserAppMapper {
             req.getUsername(),
             req.getPassword()
         );
+    }
+
+    public static LoginResponse toLoginResponse(String token){
+        return LoginResponse.builder().accessToken(token).build();
     }
 }

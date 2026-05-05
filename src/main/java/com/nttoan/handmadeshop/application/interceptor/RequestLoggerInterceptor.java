@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +30,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
         request.setAttribute(REQUEST_ID, requestId);
         request.setAttribute(START_TIME, startTime);
 
-        log.info("[{}] -> {} {}", requestId, request.getMethod(), request.getRequestURI());
+        log.info("[{}] -> {} {} - ", requestId, request.getMethod(), request.getRequestURI());
         return true;
     }
 
@@ -42,16 +43,28 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
         String requestId = (String) request.getAttribute(REQUEST_ID);
         long startTime = (long) request.getAttribute(START_TIME);
         long duration = System.currentTimeMillis() - startTime;
+        String body = getBody(request);
 
-        log.info("[{}] ← {} {} ({} ms) status={}",
+        log.info("[{}] ← {} {} ({} ms) status={}, body: {}",
                 requestId,
                 request.getMethod(),
                 request.getRequestURI(),
                 duration,
-                response.getStatus());
+                response.getStatus(),
+                body);
 
         if (ex != null) {
             log.error("[{}] ERROR: {}", requestId, ex.getMessage(), ex);
         }
+    }
+
+    private String getBody(HttpServletRequest request) {
+        if (request instanceof ContentCachingRequestWrapper wrapper) {
+            byte[] buf = wrapper.getContentAsByteArray();
+            if (buf.length > 0) {
+                return new String(buf);
+            }
+        }
+        return "";
     }
 }

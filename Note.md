@@ -28,3 +28,21 @@ domain        ❌ KHÔNG Spring, KHÔNG DTO, KHÔNG Controller \
 application   ❌ KHÔNG JPA \
 infrastructure ❌ KHÔNG business logic \
 presentation  ❌ KHÔNG chứa logic \
+
+
+presentation/
+ ├── rest/
+ │     ├── AuthController
+ │     └── UserController
+ │
+ ├── websocket/
+ │     └── NotificationSocketHandler
+ │
+ ├── messaging/
+ │     └── OrderCreatedConsumer
+ │
+ ├── batch/
+ │     └── CleanupJob
+ │
+ └── graphql/
+       └── UserResolver

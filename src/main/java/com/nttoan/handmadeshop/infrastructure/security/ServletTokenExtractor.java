@@ -6,11 +6,15 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class ServletTokenExtractor {
-    public String extrectToken(HttpServletRequest request) {
+
+    public String extractToken(HttpServletRequest request) {
+
         String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Beader ")) {
+
+        if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
+
         return null;
     }
 }

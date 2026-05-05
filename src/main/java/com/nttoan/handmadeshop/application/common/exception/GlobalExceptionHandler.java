@@ -1,9 +1,8 @@
-package com.nttoan.handmadeshop.application.exception;
+package com.nttoan.handmadeshop.application.common.exception;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -14,12 +13,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.nttoan.handmadeshop.application.common.dto.BaseResponse;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    // ===== BUSINESS =====
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<BaseResponse<?>> handleAppException(AppException ex) {
+
+        ErrorCode errorCode = ex.getErrorCode();
+
+        log.warn("AppException: {}", errorCode.getMessage());
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(BaseResponse.error(errorCode.getCode(), errorCode.getMessage()));
+    }
 
     // ===== VALIDATION =====
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -37,64 +48,52 @@ public class GlobalExceptionHandler {
         log.warn("Validation error: {}", errors);
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new BaseResponse<Map<String, String>>(errors, "VALIDATION_ERROR", "Validation failed"));
+                .status(ErrorCode.INVALID_REQUEST.getHttpStatus())
+                .body(new BaseResponse<>(
+                        errors,
+                        ErrorCode.INVALID_REQUEST.getCode(),
+                        "Validation failed"
+                ));
     }
 
     // ===== AUTH =====
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<BaseResponse<Void>> handleAuth(AuthenticationException ex) {
+
         log.warn("Authentication error: {}", ex.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(BaseResponse.error("AUTH_ERROR", "Authentication failed"));
+                .status(ErrorCode.UNAUTHENTICATED.getHttpStatus())
+                .body(BaseResponse.error(
+                        ErrorCode.UNAUTHENTICATED.getCode(),
+                        ErrorCode.UNAUTHENTICATED.getMessage()
+                ));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<BaseResponse<Void>> handleAccessDenied(AccessDeniedException ex) {
+
         log.warn("Access denied: {}", ex.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(BaseResponse.error("ACCESS_DENIED", "Access denied"));
-    }
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<BaseResponse<Void>> handleInvalidToken(InvalidTokenException ex) {
-        log.warn("Invalid token: {}", ex.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(BaseResponse.error(ex.getCode(), ex.getMessage()));
-    }
-
-    // ===== DOMAIN =====
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<BaseResponse<Void>> handleNotFound(EntityNotFoundException ex) {
-        log.warn("Entity not found: {}", ex.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(BaseResponse.error("NOT_FOUND", ex.getMessage()));
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<BaseResponse<Void>> handleBadRequest(IllegalArgumentException ex) {
-        log.warn("Invalid argument: {}", ex.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(BaseResponse.error("BAD_REQUEST", ex.getMessage()));
+                .status(ErrorCode.UNAUTHORIZED.getHttpStatus())
+                .body(BaseResponse.error(
+                        ErrorCode.UNAUTHORIZED.getCode(),
+                        ErrorCode.UNAUTHORIZED.getMessage()
+                ));
     }
 
     // ===== FALLBACK =====
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponse<Void>> handleUnknown(Exception ex) {
+
         log.error("Unexpected error", ex);
 
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(BaseResponse.error("INTERNAL_ERROR", "Unexpected error"));
+                .status(ErrorCode.UNCATEGORIZED_EXCEPTION.getHttpStatus())
+                .body(BaseResponse.error(
+                        ErrorCode.UNCATEGORIZED_EXCEPTION.getCode(),
+                        ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage()
+                ));
     }
 }
