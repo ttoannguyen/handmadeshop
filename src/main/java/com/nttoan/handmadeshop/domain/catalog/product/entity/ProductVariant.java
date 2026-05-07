@@ -9,21 +9,58 @@ public class ProductVariant {
     private int stock;
     private BigDecimal priceAdjustment;
     private boolean active;
-    public ProductVariant(String sku, String colorId, String size, int stock, BigDecimal priceAdjustment,
-            boolean active) {
+
+    public ProductVariant(
+            String sku,
+            String colorId,
+            String size,
+            int stock,
+            BigDecimal priceAdjustment) {
+        if (sku == null || sku.isBlank()) {
+            throw new IllegalArgumentException("SKU is required");
+        }
+        if (stock < 0) {
+            throw new IllegalArgumentException("Stock must >= 0");
+        }
+        if (priceAdjustment == null) {
+            priceAdjustment = BigDecimal.ZERO;
+        }
+
         this.sku = sku;
         this.colorId = colorId;
         this.size = size;
         this.stock = stock;
         this.priceAdjustment = priceAdjustment;
-        this.active = active;
+        this.active = true;
     }
 
-    public void reduceStock(int quantity){
-        if(stock < quantity){
-             throw new IllegalArgumentException("Not enough stock");
+      public void increaseStock(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must > 0");
+        }
+        this.stock += quantity;
+    }
+
+    public void reduceStock(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must > 0");
+        }
+        if (this.stock < quantity) {
+            throw new IllegalStateException("Not enough stock");
         }
         this.stock -= quantity;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
+
+    public void activate() {
+        this.active = true;
+    }
+
+    public BigDecimal calculateFinalPrice(BigDecimal basePrice) {
+        return basePrice.add(this.priceAdjustment);
     }
 
     public String getSku() {
@@ -48,5 +85,8 @@ public class ProductVariant {
 
     public boolean isActive() {
         return active;
-    }    
+    }
+
+
+    
 }

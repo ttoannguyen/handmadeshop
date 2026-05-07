@@ -1,4 +1,4 @@
-package com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity;
+package com.nttoan.handmadeshop.infrastructure.persistence.jpa;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public abstract class BaseJpaEntity {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Instant updatedAt;
 
     @PrePersist

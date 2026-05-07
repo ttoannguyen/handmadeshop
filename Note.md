@@ -46,3 +46,21 @@ presentation/
  │
  └── graphql/
        └── UserResolver
+
+
+
+POST /products
+   ↓
+Controller
+   ↓
+CreateProductUseCase
+   ↓
+Product (domain)
+   ↓
+ProductRepository (interface - domain)
+   ↓
+ProductRepositoryImpl (infrastructure)
+   ↓
+ProductJpaEntity (@Entity)
+   ↓
+DB

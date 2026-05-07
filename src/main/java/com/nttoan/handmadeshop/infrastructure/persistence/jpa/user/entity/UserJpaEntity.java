@@ -1,7 +1,7 @@
-package com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity;
+package com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.entity;
 
 import java.time.LocalDate;
-import com.nttoan.handmadeshop.domain.identity.user.entity.Role;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.BaseJpaEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +22,6 @@ public class UserJpaEntity extends BaseJpaEntity {
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
     private boolean enabled;
 }

@@ -1,7 +1,9 @@
-package com.nttoan.handmadeshop.infrastructure.persistence.jpa.mapper;
+package com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.mapper;
 
+import com.nttoan.handmadeshop.domain.identity.user.entity.Role;
 import com.nttoan.handmadeshop.domain.identity.user.entity.User;
-import com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity.UserJpaEntity;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.entity.UserJpaEntity;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.entity.UserRole;
 
 public class UserMapper {
     public static User toDomain(UserJpaEntity e) {
@@ -15,7 +17,7 @@ public class UserMapper {
                 e.getPasswordHash(),
                 e.getFullName(),
                 e.getDateOfBirth(),
-                e.getRole(),
+                mapToDomainRole(e.getRole()),
                 e.isEnabled());
     }
 
@@ -31,9 +33,29 @@ public class UserMapper {
         e.setFullName(u.getFullName());
         e.setEmail(u.getEmail());
         e.setDateOfBirth(u.getDateOfBirth());
-        e.setRole(u.getRole());
+        e.setRole(mapToJpaRole(u.getRole()));
         e.setEnabled(u.isEnabled());
 
         return e;
+    }
+
+    private static Role mapToDomainRole(UserRole role) {
+        if (role == null)
+            return null;
+
+        return switch (role) {
+            case USER -> Role.USER;
+            case ADMIN -> Role.ADMIN;
+        };
+    }
+
+    private static UserRole mapToJpaRole(Role role) {
+        if (role == null)
+            return null;
+
+        return switch (role) {
+            case USER -> UserRole.USER;
+            case ADMIN -> UserRole.ADMIN;
+        };
     }
 }

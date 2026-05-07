@@ -1,4 +1,4 @@
-package com.nttoan.handmadeshop.infrastructure.persistence.jpa.adapter;
+package com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.adapter;
 
 import java.util.Optional;
 
@@ -6,16 +6,16 @@ import org.springframework.stereotype.Repository;
 
 import com.nttoan.handmadeshop.domain.identity.user.entity.User;
 import com.nttoan.handmadeshop.domain.identity.user.repository.UserRepository;
-import com.nttoan.handmadeshop.infrastructure.persistence.jpa.entity.UserJpaEntity;
-import com.nttoan.handmadeshop.infrastructure.persistence.jpa.mapper.UserMapper;
-import com.nttoan.handmadeshop.infrastructure.persistence.jpa.repositoty.UserJpaRepository;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.entity.UserJpaEntity;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.mapper.UserMapper;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.user.repository.UserJpaRepository;
 
 @Repository
-public class JpaUserRepository implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository jpaRepository;
 
-    public JpaUserRepository(
+    public UserRepositoryImpl(
             UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }

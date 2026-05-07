@@ -4,29 +4,45 @@ public class ProductImage {
     private String imageUrl;
     private boolean primary;
     private int displayOrder;
+
     public ProductImage(String imageUrl, boolean primary, int displayOrder) {
+        if (imageUrl == null || imageUrl.isBlank()) {
+            throw new IllegalArgumentException("Image URL is required");
+        }
+        if (displayOrder < 0) {
+            throw new IllegalArgumentException("Display order must >= 0");
+        }
+
         this.imageUrl = imageUrl;
         this.primary = primary;
         this.displayOrder = displayOrder;
     }
 
+    public void markAsPrimary() {
+        this.primary = true;
+    }
+
+    public void unmarkPrimary() {
+        this.primary = false;
+    }
+
+    public void changeDisplayOrder(int order) {
+        if (order < 0) {
+            throw new IllegalArgumentException("Display order must >= 0");
+        }
+        this.displayOrder = order;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+
     public boolean isPrimary() {
         return primary;
     }
-    public void setPrimary(boolean primary) {
-        this.primary = primary;
-    }
+
     public int getDisplayOrder() {
         return displayOrder;
     }
-    public void setDisplayOrder(int displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-   
+
 }
