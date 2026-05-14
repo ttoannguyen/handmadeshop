@@ -6,13 +6,14 @@ import java.util.List;
 import com.nttoan.handmadeshop.domain.catalog.product.entity.Product;
 import com.nttoan.handmadeshop.domain.catalog.product.entity.ProductImage;
 import com.nttoan.handmadeshop.domain.catalog.product.entity.ProductVariant;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.category.entity.CategoryJpaEntity;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.entity.ProductImageJpaEntity;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.entity.ProductJpaEntity;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.entity.ProductVariantJpaEntity;
 
 public class ProductMapper {
 
-    public static ProductJpaEntity toJpa(Product p) {
+    public static ProductJpaEntity toJpa(Product p, CategoryJpaEntity category) {
 
         ProductJpaEntity e = new ProductJpaEntity();
 
@@ -20,7 +21,7 @@ public class ProductMapper {
         e.setName(p.getName());
         e.setDescription(p.getDescription());
         e.setBasePrice(p.getBasePrice());
-        e.setCategoryId(p.getCategoryId());
+        e.setCategory(category);
         e.setActive(p.isActive());
 
         // variants
@@ -52,5 +53,52 @@ public class ProductMapper {
         e.setImages(imageEntities);
 
         return e;
+    }
+
+    public static Product toDomain(ProductJpaEntity e) {
+        if (e == null)
+            return null;
+
+        Product product = Product.restore(
+                e.getId(),
+                e.getName(),
+                e.getDescription(),
+                e.getBasePrice(),
+                e.getCategory().getId(),
+                e.isActive());
+
+        // variants
+        if (e.getVariants() != null) {
+            for (ProductVariantJpaEntity ve : e.getVariants()) {
+
+                ProductVariant variant = new ProductVariant(
+                        ve.getSku(),
+                        ve.getColorId(),
+                        ve.getSize(),
+                        ve.getStock(),
+                        ve.getPriceAdjustment());
+
+                if (!ve.isActive()) {
+                    variant.deactivate();
+                }
+
+                product.addVariant(variant);
+            }
+        }
+
+        // images
+        if (e.getImages() != null) {
+            for (ProductImageJpaEntity ie : e.getImages()) {
+
+                ProductImage image = new ProductImage(
+                        ie.getImageUrl(),
+                        ie.isPrimary(),
+                        ie.getDisplayOrder());
+
+                product.addImage(image);
+            }
+        }
+
+        return product;
     }
 }

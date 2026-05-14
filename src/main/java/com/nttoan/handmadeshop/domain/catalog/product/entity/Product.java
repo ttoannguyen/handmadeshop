@@ -29,7 +29,27 @@ public class Product extends BaseEntity {
         this.description = description;
         this.basePrice = basePrice;
         this.categoryId = categoryId;
-        this.active = true; // mặc định active
+        this.active = true;
+    }
+
+    public static Product restore(
+            String id,
+            String name,
+            String description,
+            BigDecimal basePrice,
+            String categoryId,
+            boolean active) {
+
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("Id is required for restore");
+        }
+        Product product = new Product(name, description, basePrice, categoryId);
+
+        product.setId(id);
+        if (!active) {
+            product.deactive();
+        }
+        return product;
     }
 
     public void addVariant(ProductVariant variant) {

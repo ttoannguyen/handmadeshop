@@ -64,3 +64,160 @@ ProductRepositoryImpl (infrastructure)
 ProductJpaEntity (@Entity)
    ↓
 DB
+
+
+
+
+User:
+
+- Id (UUID/ Long)
+- username (unique)
+- email (unique)
+- passwordHash
+- fullname
+- dateofbirth
+- role (USER, ADMIN)
+- enabled
+- createdAt
+- updatedAt
+
+
+Product
+
+- Id
+- Name
+- Description
+- basePrice
+- Category (ManyToOne)
+- Images (OneToMany)
+- CreatedAt
+- UpdatedAt
+- Active
+
+
+Category
+
+- Id
+- Name
+- Slug (improve seo & urls)
+- parrentCategory (seft reference)
+
+
+Color
+
+- Id
+- Name
+- hexCode
+
+
+Product Variants
+
+- id
+- product
+- sku (unique)
+- color
+- size
+- stock
+- priceAdjustment
+- active
+
+
+ProductImage
+
+- id
+- product
+- imageUrl
+- isPrimary
+- displayOrder
+
+
+Cart
+
+- id
+- user
+- updatedAt
+
+
+CartItem
+
+- id
+- cart
+- productVariant
+- quantity
+- priceAtAddTime
+
+
+Order
+
+- id
+- user
+- status (PENDING, PAID, SHIPPED, COMPLETED)
+- paymentMethod
+- paymentStatus
+- shippingAddress
+- totalPrice
+- createdAt
+- totalPrice
+- updateAt
+
+
+OrderItem
+
+- id
+- order
+- productVariant
+- quantity
+- priceAtPurchase (Prices may change later, but orders must remain accurate)
+
+
+OrderStatus
+
+
+
+Address
+
+- id
+- user
+- fullname
+- phone
+- street
+- city
+- country
+- postalCode
+- isDefault
+
+
+
+
+Review
+
+- id
+- user
+- product
+- rating
+- comment
+- createdAt
+
+
+```
+public enum OrderStatus {
+    PENDING,
+    PAID,
+    SHIPPED,
+    COMPLETED,
+    CANCELLED
+}
+
+```
+User registers → Cart is created
+
+User adds items → CartItems created
+
+User checks out → Order created
+
+Cart is cleared (NOT deleted)
+
+User continues shopping with same cart
+
+
+

@@ -1,4 +1,4 @@
-package com.nttoan.handmadeshop.presentation.rest.product;
+package com.nttoan.handmadeshop.presentation.rest.catalog.product;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

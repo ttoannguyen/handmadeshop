@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.nttoan.handmadeshop.domain.catalog.product.entity.Product;
 import com.nttoan.handmadeshop.domain.catalog.product.repository.ProductRepository;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.category.entity.CategoryJpaEntity;
+import com.nttoan.handmadeshop.infrastructure.persistence.jpa.category.repository.JpaCategoryRepository;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.entity.ProductJpaEntity;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.mapper.ProductMapper;
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.repository.JpaProductRepository;
@@ -13,28 +15,27 @@ import com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.repository
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final JpaProductRepository jpaRepository;
+    private final JpaProductRepository productRepository;
 
-    public ProductRepositoryImpl(JpaProductRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
+    private final JpaCategoryRepository categoryRepository;
+
+    public ProductRepositoryImpl(JpaProductRepository productRepository, JpaCategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public Product save(Product product) {
-        ProductJpaEntity entity = ProductMapper.toJpa(product);
-        ProductJpaEntity saved = jpaRepository.save(entity);
-        return product; // (tạm thời)
-    }
+        CategoryJpaEntity category = categoryRepository.findById(product.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-    // @Override
-    // public Product save(Product product) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'save'");
-    // }
+        ProductJpaEntity saved = productRepository.save(ProductMapper.toJpa(product, category));
+        return ProductMapper.toDomain(saved);
+    }
 
     @Override
     public Optional<Product> findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return productRepository.findById(id)
+                .map(ProductMapper::toDomain);
     }
 }
