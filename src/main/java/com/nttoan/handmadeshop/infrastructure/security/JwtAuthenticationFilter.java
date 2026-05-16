@@ -58,8 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             } catch (Exception ex) {
                 SecurityContextHolder.clearContext();
-                // không throw ra để tránh break filter chain
-                // (GlobalExceptionHandler sẽ xử lý nếu cần)
+
             }
         }
 

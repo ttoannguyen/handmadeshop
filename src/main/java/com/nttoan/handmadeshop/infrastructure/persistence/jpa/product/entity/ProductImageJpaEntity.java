@@ -2,6 +2,7 @@ package com.nttoan.handmadeshop.infrastructure.persistence.jpa.product.entity;
 
 import com.nttoan.handmadeshop.infrastructure.persistence.jpa.BaseJpaEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -17,7 +18,8 @@ import lombok.Setter;
 public class ProductImageJpaEntity extends BaseJpaEntity {
 
     private String imageUrl;
-    private boolean primary;
+    @Column(name = "is_primary")
+    private boolean isPrimary;
     private int displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)

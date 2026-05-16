@@ -2,7 +2,10 @@ package com.nttoan.handmadeshop.application.catalog.category.usecase;
 
 import org.springframework.stereotype.Service;
 
+import com.nttoan.handmadeshop.application.catalog.category.command.CreateCategoryCommand;
 import com.nttoan.handmadeshop.application.catalog.category.dto.request.CreateCategoryRequest;
+import com.nttoan.handmadeshop.application.catalog.category.dto.response.CreateCategoryResponse;
+import com.nttoan.handmadeshop.application.catalog.category.mapper.CategoryAppMapper;
 import com.nttoan.handmadeshop.domain.catalog.category.entity.Category;
 import com.nttoan.handmadeshop.domain.catalog.category.repository.CategoryRepository;
 
@@ -15,12 +18,14 @@ public class CreateCategoryUseCase {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category execute(CreateCategoryRequest request) {
+    public CreateCategoryResponse execute(CreateCategoryRequest request) {
 
-        Category category = new Category(
-                request.getName(),
-                request.getDescription());
+        CreateCategoryCommand command = CategoryAppMapper.toCommand(request);
 
-        return categoryRepository.save(category);
+        Category category = new Category(command.name(), command.description());
+
+        Category saved = categoryRepository.save(category);
+
+        return CategoryAppMapper.toResponse(saved);
     }
 }
