@@ -150,7 +150,7 @@ collection:
     meta:
       id: fld_d433d8ca4ae74f0fa12bcf30b68955a8
       created: 1776670021081
-      modified: 1776670033928
+      modified: 1779114738599
       sortKey: -1776669964652.5
       description: ""
     children:
@@ -170,6 +170,41 @@ collection:
             {
             	"username": "toannguyen",
             	"password": "123456"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/register"
+        name: Register
+        meta:
+          id: req_63e6e582d9064d7589744c7b831aa3f4
+          created: 1779114733535
+          modified: 1779115046097
+          isPrivate: false
+          description: ""
+          sortKey: -1779114733535
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "toannguyen",
+            	"email": "toan@gmail.com",
+            	"password": "123456",
+            	"fullName": "Nguyen Toan",
+            	"dateOfBirth": "2003-09-18"
             }
         headers:
           - name: Content-Type
