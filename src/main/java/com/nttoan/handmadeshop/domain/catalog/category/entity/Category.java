@@ -39,6 +39,13 @@ public class Category extends BaseEntity {
         this.active = true;
     }
 
+    public void updateInfo(String name, String description) {
+        if (name != null && !name.isBlank()) {
+            this.name = name;
+        }
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }

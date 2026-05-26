@@ -19,81 +19,78 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    // ===== BUSINESS =====
-    @ExceptionHandler(AppException.class)
-    public ResponseEntity<BaseResponse<?>> handleAppException(AppException ex) {
+        // ===== BUSINESS =====
+        @ExceptionHandler(AppException.class)
+        public ResponseEntity<BaseResponse<?>> handleAppException(AppException ex) {
 
-        ErrorCode errorCode = ex.getErrorCode();
+                ErrorCode errorCode = ex.getErrorCode();
 
-        log.warn("AppException: {}", errorCode.getMessage());
+                log.warn("AppException: {}", errorCode.getMessage());
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(BaseResponse.error(errorCode.getCode(), errorCode.getMessage()));
-    }
-
-    // ===== VALIDATION =====
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<BaseResponse<Map<String, String>>> handleValidation(
-            MethodArgumentNotValidException ex) {
-
-        Map<String, String> errors = new HashMap<>();
-
-        for (var error : ex.getBindingResult().getAllErrors()) {
-            String field = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(field, message);
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(BaseResponse.error(errorCode.getCode(), errorCode.getMessage(),
+                                                errorCode.getHttpStatus()));
         }
 
-        log.warn("Validation error: {}", errors);
+        // ===== VALIDATION =====
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<BaseResponse<Map<String, String>>> handleValidation(
+                        MethodArgumentNotValidException ex) {
 
-        return ResponseEntity
-                .status(ErrorCode.INVALID_REQUEST.getHttpStatus())
-                .body(new BaseResponse<>(
-                        errors,
-                        ErrorCode.INVALID_REQUEST.getCode(),
-                        "Validation failed"
-                ));
-    }
+                Map<String, String> errors = new HashMap<>();
 
-    // ===== AUTH =====
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<BaseResponse<Void>> handleAuth(AuthenticationException ex) {
+                for (var error : ex.getBindingResult().getAllErrors()) {
+                        String field = ((FieldError) error).getField();
+                        String message = error.getDefaultMessage();
+                        errors.put(field, message);
+                }
 
-        log.warn("Authentication error: {}", ex.getMessage());
+                log.warn("Validation error: {}", errors);
 
-        return ResponseEntity
-                .status(ErrorCode.UNAUTHENTICATED.getHttpStatus())
-                .body(BaseResponse.error(
-                        ErrorCode.UNAUTHENTICATED.getCode(),
-                        ErrorCode.UNAUTHENTICATED.getMessage()
-                ));
-    }
+                return ResponseEntity
+                                .status(ErrorCode.INVALID_REQUEST.getHttpStatus())
+                                .body(BaseResponse.validationError("Validation failed", errors));
+        }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<BaseResponse<Void>> handleAccessDenied(AccessDeniedException ex) {
+        // ===== AUTH =====
+        @ExceptionHandler(AuthenticationException.class)
+        public ResponseEntity<BaseResponse<Void>> handleAuth(AuthenticationException ex) {
 
-        log.warn("Access denied: {}", ex.getMessage());
+                log.warn("Authentication error: {}", ex.getMessage());
 
-        return ResponseEntity
-                .status(ErrorCode.UNAUTHORIZED.getHttpStatus())
-                .body(BaseResponse.error(
-                        ErrorCode.UNAUTHORIZED.getCode(),
-                        ErrorCode.UNAUTHORIZED.getMessage()
-                ));
-    }
+                return ResponseEntity
+                                .status(ErrorCode.UNAUTHENTICATED.getHttpStatus())
+                                .body(BaseResponse.error(
+                                                ErrorCode.UNAUTHENTICATED.getCode(),
+                                                ErrorCode.UNAUTHENTICATED.getMessage(),
+                                                ErrorCode.UNAUTHENTICATED.getHttpStatus()));
+        }
 
-    // ===== FALLBACK =====
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<BaseResponse<Void>> handleUnknown(Exception ex) {
+        @ExceptionHandler(AccessDeniedException.class)
+        public ResponseEntity<BaseResponse<Void>> handleAccessDenied(AccessDeniedException ex) {
 
-        log.error("Unexpected error", ex);
+                log.warn("Access denied: {}", ex.getMessage());
 
-        return ResponseEntity
-                .status(ErrorCode.UNCATEGORIZED_EXCEPTION.getHttpStatus())
-                .body(BaseResponse.error(
-                        ErrorCode.UNCATEGORIZED_EXCEPTION.getCode(),
-                        ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage()
-                ));
-    }
+                return ResponseEntity
+                                .status(ErrorCode.UNAUTHORIZED.getHttpStatus())
+                                .body(BaseResponse.error(
+                                                ErrorCode.UNAUTHORIZED.getCode(),
+                                                ErrorCode.UNAUTHORIZED.getMessage(),
+                                                ErrorCode.UNAUTHORIZED.getHttpStatus()));
+        }
+
+        // ===== FALLBACK =====
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<BaseResponse<Void>> handleUnknown(Exception ex) {
+
+                log.error("Unexpected error", ex);
+
+                return ResponseEntity
+                                .status(ErrorCode.UNCATEGORIZED_EXCEPTION.getHttpStatus())
+                                .body(BaseResponse.error(
+                                                ErrorCode.UNCATEGORIZED_EXCEPTION.getCode(),
+                                                ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage(),
+                                                ErrorCode.UNCATEGORIZED_EXCEPTION.getHttpStatus()));
+        }
 }

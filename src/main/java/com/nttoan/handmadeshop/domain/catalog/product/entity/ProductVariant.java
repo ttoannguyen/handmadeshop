@@ -2,7 +2,9 @@ package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
 import java.math.BigDecimal;
 
-public class ProductVariant {
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+
+public class ProductVariant extends BaseEntity {
     private String sku;
     private String colorId;
     private String size;
@@ -34,7 +36,7 @@ public class ProductVariant {
         this.active = true;
     }
 
-      public void increaseStock(int quantity) {
+    public void increaseStock(int quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must > 0");
         }
@@ -87,6 +89,4 @@ public class ProductVariant {
         return active;
     }
 
-
-    
 }

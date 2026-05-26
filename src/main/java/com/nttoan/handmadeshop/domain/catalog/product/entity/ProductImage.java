@@ -1,6 +1,8 @@
 package com.nttoan.handmadeshop.domain.catalog.product.entity;
 
-public class ProductImage {
+import com.nttoan.handmadeshop.domain.common.entity.BaseEntity;
+
+public class ProductImage extends BaseEntity {
     private String imageUrl;
     private boolean primary;
     private int displayOrder;

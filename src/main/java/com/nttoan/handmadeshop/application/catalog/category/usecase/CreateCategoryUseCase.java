@@ -6,6 +6,7 @@ import com.nttoan.handmadeshop.application.catalog.category.command.CreateCatego
 import com.nttoan.handmadeshop.application.catalog.category.dto.request.CreateCategoryRequest;
 import com.nttoan.handmadeshop.application.catalog.category.dto.response.CreateCategoryResponse;
 import com.nttoan.handmadeshop.application.catalog.category.mapper.CategoryAppMapper;
+import com.nttoan.handmadeshop.application.common.dto.BaseResponse;
 import com.nttoan.handmadeshop.domain.catalog.category.entity.Category;
 import com.nttoan.handmadeshop.domain.catalog.category.repository.CategoryRepository;
 
@@ -18,14 +19,19 @@ public class CreateCategoryUseCase {
         this.categoryRepository = categoryRepository;
     }
 
-    public CreateCategoryResponse execute(CreateCategoryRequest request) {
+    public BaseResponse<CreateCategoryResponse> execute(CreateCategoryRequest request) {
+        try {
+            CreateCategoryCommand command = CategoryAppMapper.toCommand(request);
 
-        CreateCategoryCommand command = CategoryAppMapper.toCommand(request);
+            Category category = new Category(command.name(), command.description());
 
-        Category category = new Category(command.name(), command.description());
+            Category saved = categoryRepository.save(category);
 
-        Category saved = categoryRepository.save(category);
-
-        return CategoryAppMapper.toResponse(saved);
+            return BaseResponse.created(CategoryAppMapper.toResponse(saved));
+        } catch (IllegalArgumentException e) {
+            return BaseResponse.error("VALIDATION_ERROR", e.getMessage(), 400, null);
+        } catch (Exception e) {
+            return BaseResponse.error("ERROR", "Failed to create category", 500, e.getMessage());
+        }
     }
 }

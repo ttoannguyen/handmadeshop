@@ -49,6 +49,5 @@ public class AuthController {
         log.info("[AuthController] login attempt username={}", command.username());
         String token = loginUseCase.execute(command);
         return UserAppMapper.toLoginResponse(token);
-    }   
-    
+    }
 }
